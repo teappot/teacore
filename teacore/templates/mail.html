@@ -1,0 +1,63 @@
+{% load i18n %}
+{% load static %}
+
+<table width="100%" cellpadding="0" cellspacing="0">
+    <tbody>
+        <tr>
+            <td align="center" bgcolor="#efefef" style="background-color:#efefef">
+                <table cellpadding="0" cellspacing="0"
+                    style="
+                    padding:0 20px;
+                    font-family:Open sans, sans-serif;
+                    font-size:14px;
+                    color:#393E46;
+                    line-height:120%">
+                    <tbody>
+                        <tr>
+                            <td width="600" style="background-color:white">
+                                <table cellpadding="15" cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td width="0" style="width: 48px;">
+                                                <img src="{{ APP_LOGO }}" alt="{{ APP_NAME}}" style="height: 48px;" />
+                                            </td>
+                                            <td align="left">
+                                                <div style="display: inline-block; text-transform: uppercase; color: #222831; font-family: 'News Cycle', 'Arial Narrow Bold', sans-serif;">
+                                                    <h2 style="margin: 0;">
+                                                        {{ APP_NAME }}
+                                                    </h2>
+                                                    {% if APP_SLOGAN %}
+                                                    <small>{{ APP_SLOGAN }}</small>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="line-height: 1.5em; color:#393E46; padding-top: 0;">
+                                                <hr/>
+                                                {% block mail %}
+                                                    {{ message }}
+                                                {% endblock %}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" align="center" style="background-color: #393E46;">
+                                                <p style="margin: 1rem;">
+                                                    <small>
+                                                        <a href="{{ APP_HOST }}" target="_blank" style="color: #FFF; text-decoration: none;">
+                                                            {{ APP_AUTHOR }} &copy; {{ DATETIME|date:"Y" }}
+                                                        </a>
+                                                    </small>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,23 @@
+<nav style="--bs-breadcrumb-divider: '{{ divider }}';" aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0">
+        {% for crumb in breadcrumbs %}
+        <li class="breadcrumb-item {% if crumb.url is None and crumb.index > 1 %}d-none d-md-inline{% endif %}" aria-current="page">
+            {% if crumb.url and crumb.index == 0 %}
+                <a href="{{ crumb.url }}"><i class="bi bi-house-door-fill"></i></a>
+            {% elif crumb.url %}
+                <a href="{{ crumb.url }}">{{ crumb.name }}</a>
+            {% else %}
+                <span class="d-inline">{{ crumb.name }}</span>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ol>
+</nav>
+
+<style>
+    .breadcrumb h1 {
+        font-size: var(--bs-body-font-size);
+        line-height: var(--bs-body-line-height);
+        margin-bottom: 0;
+    }
+</style>

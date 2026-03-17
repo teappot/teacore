@@ -1,0 +1,71 @@
+{% if TRACK_ANALITYCS and False %}
+<!-- Modal -->
+<div class="modal fade" id="modalConcent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalConcentLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalConcentLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary pull-left" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="consentGrantedAdStorage()" data-bs-dismiss="modal">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create one update function for each consent parameter -->
+<script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    
+    // Set default consent to 'denied' as a placeholder
+    // Determine actual values based on your own requirements
+    gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied'
+    });
+</script>
+<script>
+    /*'
+    consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied'
+    });
+    */
+    function consentGrantedAdStorage() {
+       gtag('consent', 'update', {
+           'ad_storage': 'granted'
+       });
+    }
+    function consentGrantedAdUserData() {
+        gtag('consent', 'update', {
+            'ad_user_data': 'granted'
+        });
+    }
+    function consentGrantedAdPersonalization() {
+        gtag('consent', 'update', {
+            'ad_personalization': 'granted'
+        });
+    }
+    function consentGrantedAnalyticsStorage() {
+        gtag('consent', 'update', {
+            'analytics_storage': 'granted'
+        });
+    }
+
+    const modalConcent = new bootstrap.Modal('#modalConcent', {
+        keyboard: false
+    })
+    modalConcent.show();
+</script>
+{% endif %}

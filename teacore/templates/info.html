@@ -1,0 +1,132 @@
+{% extends HX_BOOSTED|yesno:"hx-boosted.html,html.html" %}
+{% load static %}
+{% load i18n %}
+{% load social %}
+{% load markdown %}
+
+{% block style %}
+<style>
+    /** Social Links **/
+    .social-links i {
+        font-size: 1.8em;
+    }
+    
+    .social-links .btn-link {
+        color: var(--bs-light-text-emphasis);
+        text-decoration: none;
+        padding-left: 0.25em;
+        padding-right: 0.25em;
+    }
+
+    .social-links .btn-link:hover {
+        text-shadow: 0 0 2px var(--bs-light-text-emphasis);
+    }
+
+    #info i.bi.bi-check-circle-fill {
+        font-size: 4rem;
+    }
+</style>
+{% endblock %}
+
+{% block header %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="/" hx-boost="false">
+            {% if APP_LOGO %}
+            <img src="{{ APP_LOGO }}" alt="{{ APP_TITLE }}">
+            {% endif %}
+            <div style="display: inline-block;">
+                <h2>{{ APP_NAME }}</h2>
+                {% if APP_SLOGAN %}
+                <small>{{ APP_SLOGAN }}</small>
+                {% endif %}
+            </div>
+        </a>
+    </div>
+</nav>
+{% endblock %}
+
+{% block body %}
+<div id="content" class="d-flex flex-column">
+
+    <article class="flex-grow-1">
+        <div class="container">
+            <div class="content-body">
+                
+                {% block info %}
+                <section id="info" class="section-padding bg-light pt-5 pb-4">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8 text-center">
+                                <div class="{{ 'alert'|styling:info.styling}} p-4 p-md-5 shadow-sm" role="alert">
+                                    <div class="row">
+                                        <div class="col-12 col-md-2">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                        </div>
+                                        <div class="col-12 col-md-10 text-start">
+                                            <p class="lead">{{ info.title }}</p>
+                                            <h2 class="alert-heading fw-bold">{{ info.subtitle }}</h2>
+                                        </div>
+                                    </div>
+                                    <hr>
+
+                                    {% if info.message %}
+                                    <p class="mb-0">
+                                        <blockquote class="{{ 'blockquote'|styling:info.styling }}">
+                                            {{ info.message|markdown|safe }}
+                                        </blockquote>
+                                    </p>
+                                    {% endif %}
+
+                                    {% if info.extra %}
+                                    <p class="mb-0">
+                                        {{ info.extra|markdown|safe }}
+                                    </p>
+                                    {% endif %}
+
+                                    {% for message in messages %}
+                                    <div class="toast show mb-1 mx-auto {{ 'toast'|styling:message.tags }}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+                                        <div class="toast-header">
+                                            <strong class="me-auto">{{ APP_NAME }}</strong>
+                                        </div>
+                                        <div class="toast-body">
+                                            {{ message|safe }}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    
+                                    <p class="mt-4">
+                                        <a href="{{ info.cta.url }}" class="btn {{ 'btn-outline'|styling:info.styling }}" hx-boost="false">{{ info.cta.label }}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                {% endblock %}
+                
+                <section id="social">
+                    <div class="container content px-lg-5 mx-auto my-3">
+                        <div class="px-4 text-center">
+                            <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center">
+                                <div class="social-links">
+                                    {% trans "Síguenos" %}
+                                    {% social_links %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+    </article>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% include "footer.html" %}
+{% endblock %}
+
+{% block messages %}
+{% endblock %}

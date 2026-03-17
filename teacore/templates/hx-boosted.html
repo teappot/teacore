@@ -1,0 +1,31 @@
+{% block title %}
+<title lang="{{ LANGUAGE_CODE }}">{{ APP_TITLE }}</title>
+{% endblock %}
+
+<body class="d-flex flex-column min-vh-100 bg-body-secondary" data-bs-theme="{{ DARKMODE }}" 
+    hx-boost="true" hx-swap="outerHTML" hx-target="body" hx-indicator="body"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+    {% if TRACK_GOOGLETAG and not user.is_staff %}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ TRACK_GOOGLETAG }}"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    {% endif %}
+
+    {% block header %}{% endblock %}
+
+    {% block body %}{% endblock %}
+
+    {% block footer %}{% endblock %}
+
+    {% block messages %}
+    <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-4" aria-live="polite" aria-atomic="true">
+        {% include 'toast.html' %}
+    </div>
+    {% endblock %}
+
+    {% block style %}{% endblock %}
+    {% block javascript %}{% endblock %}
+
+</body>

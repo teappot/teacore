@@ -1,0 +1,76 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+<div class="widget share" data-lang="{{ LANGUAGE_CODE }}">
+    {% if SHARE_COPYLINK %}
+    <button class="btn btn-link flip" onclick="javascript:
+        navigator.clipboard.writeText(window.location.href);
+        this.querySelector('i').classList.remove('bi-link-45deg');
+        this.querySelector('i').classList.add('bi-check-circle-fill','success');
+        setTimeout(function(self) {
+            self.querySelector('i').classList.remove('bi-check-circle-fill','success');
+            self.querySelector('i').classList.add('bi-link-45deg');
+        }, 1000, this);
+        "
+        data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Link Copied!">
+        <i class="bi bi-link-45deg"></i>
+    </button>
+    {% endif %}
+    {% if SHARE_FACEBOOK %}
+    <button class="btn btn-link" onclick="javascript:
+    window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(window.location.href), '_blank');">
+        <i class="bi bi-facebook"></i>
+    </button>
+    {% endif %}
+    {% if SHARE_INSTAGRAM and False%}
+    <!-- FIXME -->
+    <button class="btn btn-link" onclick="javascript:
+        window.open('https://www.instagram.com/sharing/?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent(document.title), '_blank');">
+        <i class="bi bi-instagram"></i>
+    </button>
+    {% endif %}
+    {% if SHARE_LINKEDIN %}
+    <button class="btn btn-link" onclick="javascript:
+        window.open('http://www.linkedin.com/shareArticle?mini=true&url='+encodeURIComponent(window.location.href), '_blank');">
+        <i class="bi bi-linkedin"></i>
+    </button>
+    {% endif %}
+    {% if SHARE_TELEGRAM %}
+    <button class="btn btn-link" onclick="javascript:
+        window.open('https://telegram.me/share/url?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent(document.title), '_blank');">
+        <i class="bi bi-telegram"></i>
+    </button>
+    {% endif %}
+    {% if SHARE_THREADS %}
+    <!-- FIXME -->
+    <button class="btn btn-link" onclick="javascript:
+        window.open('https://www.threads.net/share?url='+encodeURIComponent(window.location.href), '_blank');">
+        <i class="bi bi-threads"></i>
+    </button>
+    {% endif %}
+    {% if SHARE_TIKTOK and False %}
+    <!-- FIXME -->
+    <button class="btn btn-link" onclick="javascript:
+        window.open('https://www.tiktok.com/share?url='+encodeURIComponent(window.location.href), '_blank');">
+        <i class="bi bi-tiktok"></i>
+    </button>
+    {% endif %}
+    {% if SHARE_TWITTER_X %}
+    <button class="btn btn-link" onclick="javascript:
+        window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(window.location.href)+'&text='+encodeURIComponent(document.title), '_blank');">
+        <i class="bi bi-twitter-x"></i>
+    </button>
+    {% endif %}
+    {% if SHARE_WHATSAPP %}
+    <button class="btn btn-link" onclick="javascript:
+        window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(window.location.href), '_blank');">
+        <i class="bi bi-whatsapp"></i>
+    </button>
+    {% endif %}
+</div>
+
+<style>
+i.success {
+    color: var(--bs-success) !important;
+}
+</style>

@@ -1,0 +1,263 @@
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <link rel="shortcut icon" href="{% static 'img/favicon-admin.png' %}" type="image/png" />
+
+    <script src="{% static 'libs/htmx.min.js' %}"></script>
+    <script src="{% static 'libs/ace-1.41.0/ace.js' %}"></script>
+    <script src="{% static 'libs/cookie-manager.js' %}" type="text/javascript" charset="utf-8"></script>
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css' %}" />
+    <style>
+        .ace-container {
+            width: 100%;
+        }
+        .ace-toolbar {
+            width: 90%;
+            max-width: 1366px;
+            padding: 0.75rem 0.25rem;
+            box-sizing: border-box;
+            text-align: end;
+        }
+        .ace-toolbar button {
+            background: var(--button-bg);
+            border: none;
+            color: var(--button-fg);
+            padding: 0.375rem 0.75rem;
+            margin-left: 0.5rem;
+            border-radius: 4px;
+        }
+        .ace-toolbar button.active {
+            box-shadow: inset -2px -2px 4px #333, inset 2px 2px 4px #000;
+            background: var(--button-hover-bg);
+            transform: translateY(2px);
+        }
+        .ace-toolbar button:hover,
+        a.btn-action:hover {
+            background: var(--button-hover-bg);
+            cursor: pointer;
+        }
+
+        .ace_editor {
+            width: 90%;
+            max-width: 1366px;
+            min-height: 800px;
+        }
+        .ace_editor.half {
+            min-height: 400px;
+        }
+        .ace_editor.quarter {
+            max-width: 800px;
+            min-height: 10rem;
+        }
+        .ace_editor.inline {
+            min-height: 5rem;
+            width: 100%;
+            max-width: 800px;
+        }
+        .inline .ace_folding-enabled > .ace_gutter-cell {
+            padding-left: 0 !important;
+            padding-right: 6px;
+        }
+        textarea.markdown,
+        textarea.json {
+            display: none;
+        }
+        a[target="_BLANK"]:after {
+            font-family: bootstrap-icons, sans-serif !important;
+            content: "\f1c5";
+            margin-left: 4px;
+            font-size: 0.75em;
+            text-decoration: none;
+        }
+        a.btn-action {
+            display: block;
+            background: var(--button-bg);
+            border-radius: 4px;
+            padding: 0.625rem 0.9375rem;
+            height: 0.9375rem;
+            line-height: 0.9375rem;
+            color: var(--button-fg);
+        }
+        .inline-related textarea {
+            width: 100%;
+            margin-right: 1rem;
+            box-sizing: border-box;
+            height: 5rem;
+        }
+
+        .inline-related th {
+            white-space: nowrap;
+        }
+        label[for="id_uuid"],
+        .field-uuid label {
+            text-transform: uppercase;
+        }
+        .inline-related .column-rownumber,
+        .inline-related td:has(input[type="number"]),
+        .inline-related td:has(input[type="checkbox"]) {
+            width: 1px;
+        }
+        .inline-related td:has(input[type="checkbox"]) {
+            text-align: center;
+        }
+
+        .inline-group .field-origin p {
+            max-width: 500px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /** Copy to Clipboard **/
+        .copy-clipboard {
+            font-family: monospace;
+            cursor: pointer;
+            position: relative;
+        }
+        .copy-clipboard:hover {
+            text-decoration: underline;
+        }
+        .copy-clipboard:after {
+            font-family: bootstrap-icons, sans-serif !important;
+            content: "\F28E";
+            margin-left: 0.5rem;
+            font-size: 1rem;
+            text-decoration: none;
+            position: absolute;
+            transition: transform 0.1s, color 0.1s;
+        }
+        .copy-clipboard.copied:after {
+            content: "\F28B"; /* check icon */
+            color: var(--conway-green, #228b22);
+            transform: scale(1.2);
+        }
+    </style>
+    <script languaje="text/javascript">
+        function addAceToolbar(parent, editor) {
+            /** Toolbar **/
+            var toolbar = document.createElement('div');
+            toolbar.className = "ace-toolbar ace-monokai";
+            
+            let textWrapToggle = document.createElement('button');
+            textWrapToggle.type = "button";
+            textWrapToggle.innerHTML = '<i class="bi bi-text-wrap"></i> Text Wrap';
+            let wrapping = cookieManager.get("ace-editor-wrap", false) == "true";
+            wrapping ? textWrapToggle.classList.add('active') : textWrapToggle.classList.remove('active');
+
+            textWrapToggle.onclick = function() {
+                wrapping = cookieManager.get("ace-editor-wrap", false) == "true";
+                editor.session.setUseWrapMode(!wrapping);
+                cookieManager.set("ace-editor-wrap", !wrapping);
+                wrapping ? textWrapToggle.classList.remove('active') : textWrapToggle.classList.add('active');
+            }
+
+            toolbar.append(textWrapToggle);
+            parent.prepend(toolbar);
+        }  
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            // Initialize Ace editor for all textareas with class 'markdown'
+            document.querySelectorAll("textarea.markdown").forEach(textarea => {
+                var addToolbar = true;
+
+                var parent = document.createElement('div');
+                parent.className = "ace-container";
+                textarea.after(parent);
+
+                /** Ace Editor **/
+                var wrapper = document.createElement('div');
+                wrapper.id = "ace-"+textarea.id
+                
+                if (textarea.classList.contains('half')) {
+                    wrapper.classList.add('half');
+                }
+                if (textarea.classList.contains('quarter')) {
+                    wrapper.classList.add('quarter');
+                }
+                if (textarea.classList.contains('inline')) {
+                    wrapper.classList.add('inline');
+                    addToolbar = false;
+                }
+                parent.append(wrapper);
+
+                var editor = ace.edit("ace-"+textarea.id);
+                editor.getSession().setValue(textarea.value);
+                editor.getSession().on('change', function(){
+                    textarea.value = editor.getSession().getValue();
+                });
+
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/markdown");
+                
+                if (textarea.classList.contains('inline')) {
+                    editor.session.setUseWrapMode(true);
+                }else{
+                    let wrapping = cookieManager.get("ace-editor-wrap", false) == "true";
+                    editor.session.setUseWrapMode(wrapping);
+                }
+
+                if(addToolbar) addAceToolbar(parent, editor);
+            });
+            
+            document.querySelectorAll("textarea.json").forEach(textarea => {
+                var addToolbar = true;
+
+                var parent = document.createElement('div');
+                parent.className = "ace-container";
+                textarea.after(parent);
+
+                /** Ace Editor **/
+                var wrapper = document.createElement('div');
+                wrapper.id = "ace-"+textarea.id
+                
+                if (textarea.classList.contains('half')) {
+                    wrapper.classList.add('half');
+                }
+                if (textarea.classList.contains('quarter')) {
+                    wrapper.classList.add('quarter');
+                }
+                parent.append(wrapper);
+
+                var editor = ace.edit("ace-"+textarea.id);
+                editor.getSession().setTabSize(4);
+                editor.setValue(JSON.stringify(JSON.parse(textarea.value), null, '\t'));
+                editor.getSession().on('change', function(){
+                    textarea.value = editor.getSession().getValue();
+                });
+
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/json");
+                
+                if (textarea.classList.contains('inline')) {
+                    editor.session.setUseWrapMode(true);
+                }else{
+                    let wrapping = cookieManager.get("ace-editor-wrap", false) == "true";
+                    editor.session.setUseWrapMode(wrapping);
+                }
+
+                if(addToolbar) addAceToolbar(parent, editor);
+            });
+
+            document.addEventListener("keydown", function(event) {
+                if ((event.metaKey || event.ctrlKey) && event.key === "s") {
+                    event.preventDefault();
+                    document.getElementsByName("_continue")[0].click();
+                }
+            });
+        });
+
+        function copyToClipboard(obj) {
+            var text = obj.textContent || obj.innerText;
+            navigator.clipboard.writeText(text).then(function() {
+                obj.classList.add('copied');
+                setTimeout(function(){ obj.classList.remove('copied'); }, 500);
+            }, function(err) {
+                alert("Error in copying text: ", err);
+            });
+        }
+    </script>
+{% endblock %}

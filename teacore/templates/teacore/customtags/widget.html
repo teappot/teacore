@@ -1,0 +1,15 @@
+{% load static %}
+{% load i18n %}
+{% load markdown %}
+
+{% if widget %}
+<div class="widget" data-lang="{{ widget.lang.code }}">
+    {{ widget.body | markdown | safe }}
+</div>
+{% else %}
+<div class="widget-alert alert alert-warning text-center" role="alert">
+    <i class="bi bi-exclamation-triangle-fill"></i> 
+    <span style="margin-left: 1em; margin-right: 1em;">{% trans 'Widget not found' %}</span>
+    <i class="bi bi-exclamation-triangle-fill"></i>
+</div>
+{% endif %}

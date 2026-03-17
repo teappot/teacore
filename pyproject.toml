@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "teappot-core"
+version = "0.1.1"
+description = "Teappot core"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Conway Build & Learn", email = "helloworld@conway.cl" }
+]
+# Aquí defines las dependencias que el Core necesita para funcionar
+dependencies = [
+    "asgiref==3.11.0",
+    "dj-rest-auth==7.0.2",
+    "Django==5.2.10",
+    "django-cors-headers==4.9.0",
+    "djangorestframework==3.16.1",
+    "djangorestframework_simplejwt==5.5.1",
+    "dotenv==0.9.9",
+    "Markdown==3.10",
+    "PyJWT==2.10.1",
+    "python-dateutil==2.9.0.post0",
+    "python-dotenv==1.2.1",
+    "pytz==2025.2",
+    "six==1.17.0",
+    "sqlparse==0.5.5",
+    "facebook_business==24.0.1",
+    "pillow>=10.4.0",
+]
+
+[tool.setuptools.packages.find]
+# Esto buscará automáticamente las carpetas que contengan un __init__.py
+where = ["."]
+include = ["teacore*"] 
+
+[tool.setuptools.package-data]
+# IMPORTANTE: Esto asegura que los templates y static del core se incluyan en el paquete
+"*" = ["*.html", "*.css", "*.js", "*.png", "*.jpg", "*.json"]

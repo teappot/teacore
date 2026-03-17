@@ -1,0 +1,48 @@
+<style>
+    /** Success Toast **/
+    .toast.success .toast-header {
+        background-color: var(--bs-success);
+        color: var(--bs-light);
+    }
+    .toast.success .toast-header i.bi.bi-custom::before {
+        content: "\F26A";
+    }
+    /** Info Toast **/
+    .toast.info .toast-header {
+        background-color: var(--bs-info);
+        color: var(--bs-light);
+    }
+    .toast.info .toast-header i.bi.bi-custom::before {
+        content: "\F430";
+    }
+    /** Warning Toast **/
+    .toast.warning .toast-header {
+        background-color: var(--bs-warning);
+        color: var(--bs-dark);
+    }
+    .toast.warning .toast-header i.bi.bi-custom::before {
+        content: "\F33A";
+    }
+
+    /** Error Toast **/
+    .toast.error .toast-header {
+        background-color: var(--bs-danger);
+        color: var(--bs-light);
+    }
+    .toast.error .toast-header i.bi.bi-custom::before {
+        content: "\F336";
+    }
+</style>
+{% for message in messages %}
+<div class="toast show {{ message.tags }}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+    <div class="toast-header">
+        <i class="bi bi-custom me-2"></i>
+        <span class="me-auto fw-bold text-capitalize">{{ message.tags }}</span>
+        <button type="button" class="btn-close btn-close-black me-2 m-auto" data-bs-dismiss="toast"
+            aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+        {{ message|safe }}
+    </div>
+</div>
+{% endfor %}

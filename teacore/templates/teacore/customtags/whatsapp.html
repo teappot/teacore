@@ -1,0 +1,8 @@
+{% load static %}
+{% load i18n %}
+{% load markdown %}
+
+<a href="https://wa.me/{{ phone }}{% if text %}?text={{ text }}{% endif %}" target="_blank" class="btn btn-whatsapp mx-auto">
+    {% trans "WhatsApp" %}
+    <i class="bi bi-whatsapp"></i>
+</a>

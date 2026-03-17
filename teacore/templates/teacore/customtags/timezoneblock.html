@@ -1,0 +1,38 @@
+{% load i18n %}
+
+<style>
+    .timezoneblock,
+    .timezoneblock ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .timezoneblock li {
+        display: inline-block;
+        text-align: left;
+    }
+    .timezoneblock .country li {
+        display: block;
+    }
+    .timezoneblock img.flag {
+        width: 56px;
+        height: auto;
+        display: block;
+    }
+</style>
+{% regroup countries by hour as grouped_countries %}
+<ul class="timezoneblock d-flex justify-content-between {{ styling }}">
+    {% for country in grouped_countries %}
+    <li class="timezone me-2">
+        <span class="fs-4 mb-1">{{ country.grouper }}</span>
+        <ul class="country">
+        {% for item in country.list %}
+            <li class="mb-2">
+                <img class="flag" src="https://flagcdn.com/w80/{{ item.code }}.webp" alt="flag" />
+                {% trans item.name %}
+            </li>
+        {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+</ul>

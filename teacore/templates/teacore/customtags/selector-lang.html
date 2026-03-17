@@ -1,0 +1,27 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% if languages and languages.count > 1 %}
+<div class="widget" data-lang="{{ LANGUAGE_CODE }}">
+    <div class="input-group">
+        <select id="selector-lang" class="form-select">
+            {% for lang in languages %}
+            <option value="{{ lang.code }}" {% if lang.code == LANGUAGE_CODE %}selected{% endif %}>
+                {% trans lang.name %}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<script>
+    const currentLang = "{{ LANGUAGE_CODE }}";
+    document.getElementById('selector-lang').addEventListener('change', (event) => {
+        const selectedLang = event.target.value;
+        if (selectedLang !== currentLang) {
+            cookieManager.set('lang', selectedLang);
+            globalThis.location.href = `?lang=${selectedLang}`;
+        }
+    });
+</script>
+{% endif %}

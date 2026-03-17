@@ -1,0 +1,77 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% if SETTINGS_DARKMODE == "auto" or SETTINGS_THEME == "user" %}
+
+<div class="widget" data-lang="{{ LANGUAGE_CODE }}">
+    <div class="input-group">
+        {% if THEME is not None and SETTINGS_THEME == "user" %}
+        <select id="selector-theme" class="form-select">
+            {% for theme in themes %}
+            <option value="{{ theme }}" {% if theme == THEME %}selected{% endif %}>
+                {{ theme }}
+            </option>
+            {% endfor %}
+        </select>
+        {% endif %}
+        
+        {% if DARKMODE is not None and SETTINGS_DARKMODE == "auto" %}
+        <button id="selector-darkmode" class="btn btn-secondary" type="button" onclick="toggleDarkMode(this)"> 
+            {% if DARKMODE == 'dark'%}
+            <i id="theme-icon" class="bi bi-moon-stars-fill"></i>
+            {% elif DARKMODE == 'light' %}
+            <i id="theme-icon" class="bi bi-brightness-high-fill"></i>
+            {% else %}
+            <i id="theme-icon" class="bi bi-circle-half"></i>
+            {% endif %}
+        </button>
+        {% endif %}
+    </div>
+</div>
+
+{% if THEME is not None and SETTINGS_THEME == "user" %}
+<script>
+    /**  Theme Selector **/
+    document.getElementById('selector-theme').addEventListener('change', (event) => {
+        const currentTheme = "{{ THEME }}";
+        const selectedTheme = event.target.value;
+        if (selectedTheme !== currentTheme) {
+            cookieManager.set('theme', selectedTheme);
+            window.location.href = `?theme=${selectedTheme}`;
+        }
+    });
+</script>
+{% endif %}
+
+{% if DARKMODE is not None and SETTINGS_DARKMODE == "auto" %}
+<script>
+    /**  Dark Mode Selector **/
+    currentDarkMode = "{{ DARKMODE }}"; // Estado inicial del tema
+    
+    function toggleDarkMode(button) {
+        const autoDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        
+        if (button !== undefined) {
+            const themeIcon = button.querySelector('i');
+            
+            if (currentDarkMode == 'auto') {
+                currentDarkMode = 'light';
+                themeIcon.classList.replace('bi-circle-half', 'bi-brightness-high-fill');
+            } else if (currentDarkMode == 'light') {
+                currentDarkMode = 'dark';
+                themeIcon.classList.replace('bi-brightness-high-fill', 'bi-moon-stars-fill');
+            } else { // currentTheme == 'dark'
+                currentDarkMode = 'auto';
+                themeIcon.classList.replace('bi-moon-stars-fill', 'bi-circle-half');
+            }
+
+            cookieManager.set('darkmode', currentDarkMode);
+        }
+
+        document.body.setAttribute('data-bs-theme', (currentDarkMode == 'auto' ? autoDarkMode : currentDarkMode));
+    }
+    toggleDarkMode();
+</script>
+{% endif %}
+
+{% endif %}

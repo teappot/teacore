@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: teappot-core
+Version: 0.1.1
+Summary: Teappot core
+Author-email: Conway Build & Learn <helloworld@conway.cl>
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: asgiref==3.11.0
+Requires-Dist: dj-rest-auth==7.0.2
+Requires-Dist: Django==5.2.10
+Requires-Dist: django-cors-headers==4.9.0
+Requires-Dist: djangorestframework==3.16.1
+Requires-Dist: djangorestframework_simplejwt==5.5.1
+Requires-Dist: dotenv==0.9.9
+Requires-Dist: Markdown==3.10
+Requires-Dist: PyJWT==2.10.1
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: python-dotenv==1.2.1
+Requires-Dist: pytz==2025.2
+Requires-Dist: six==1.17.0
+Requires-Dist: sqlparse==0.5.5
+Requires-Dist: facebook_business==24.0.1
+Requires-Dist: pillow>=10.4.0

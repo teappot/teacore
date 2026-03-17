@@ -1,0 +1,45 @@
+{% load i18n %}
+{% load static %}
+{% load selectors %}
+{% load widget %}
+
+<nav class="navbar navbar-expand-lg bg-primary">
+    <div class="container my-2">
+        <a class="navbar-brand" href="/">
+            {% if APP_LOGO %}
+            <img src="{{ APP_LOGO }}" alt="{{ APP_TITLE }}">
+            {% endif %}
+            <div style="display: inline-block;">
+                <h2>{{ APP_NAME }}</h2>
+                {% if APP_SLOGAN %}
+                <small>{{ APP_SLOGAN }}</small>
+                {% endif %}
+            </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-top-menu"
+            aria-controls="offcanvas-top-menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas-top-menu" aria-labelledby="offcanvas-top-menu-label">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvas-top-menu-label">
+                    {{ APP_TITLE }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body" id="top-menu">
+                <div class="navbar-nav flex-grow-1 pe-3 justify-content-end d-none" hx-target="#content" hx-select="#content">
+                    <!-- menu "teappot-types" "data-bs-dismiss='offcanvas'" -->
+                </div>
+                <hr class="d-xs-block d-sm-block d-md-none"/>
+                <div class="mt-1 mt-lg-0 ms-lg-1">
+                    {% selector_lang %}
+                </div>
+                <div class="mt-1 mt-lg-0 ms-lg-1">
+                    {% selector_theme DARKMODE THEME %}
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

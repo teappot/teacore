@@ -1,0 +1,133 @@
+{% load static %}
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+
+<head>
+{% block head %}
+    {% if TRACK_ANALITYCS and not user.is_staff %}
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ TRACK_ANALITYCS }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        
+        gtag('js', new Date());
+        gtag('config', '{{ TRACK_ANALITYCS }}');
+    </script>
+    {% endif %}
+
+    {% if TRACK_GOOGLETAG and not user.is_staff %}
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','{{ TRACK_GOOGLETAG }}');</script>
+    <!-- End Google Tag Manager -->
+    {% endif %}
+
+    {% block title %}
+    <title lang="{{ LANGUAGE_CODE }}">{{ APP_TITLE }}</title>
+    {% endblock %}
+    
+    <link rel="alternate" hreflang="{{ LANGUAGE_CODE }}" href="{{ APP_URL }}">
+
+    <meta http-equiv="content-language" content="{{ LANGUAGE_CODE }}">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    
+    <meta name="author" content="{{ META_AUTHOR }}">
+    <meta name="copyright" content="{{ META_COPYRIGHT }}">
+    {% block meta %}
+    <meta name="description" content="{{ META_DESCRIPTION }}">
+    <meta name="keywords" content="{{ META_KEYWORDS }}">
+    {% endblock %}
+
+    <meta property="og:locale" content="{{ LANGUAGE_CODE }}" />
+    <meta property="og:site_name" content="{{ APP_NAME }}">
+    <meta property="og:url" content="{{ APP_URL }}" />
+    {% block og %}
+    <meta property="og:title" content="{{ APP_TITLE }}" />
+    <meta property="og:description" content="{{ META_DESCRIPTION }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{% static 'img/logo.png' %}" />
+    {% endblock %}
+
+    {% block schema %}
+    <script type="application/ld+json">{{ schema|safe }}</script>
+    {% endblock %}
+    
+    <link rel="canonical" href="{{ APP_URL }}" />
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/png" />
+    <link rel="apple-touch-icon" href="{% static 'img/favicon.png' %}">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/bootstrap-5.3.3/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/bootswatch-5.3.3/'|add:THEME|add:'.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'libs/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'custom.css' %}" />
+
+    <script src="{% static 'libs/bootstrap-5.3.3/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'libs/htmx.min@2.0.8.js' %}"></script>
+    <!-- script src="{% static 'libs/htmx-ext-response-targets-2.0.2.js' %}"></script -->
+    <script src="{% static 'libs/cookie-manager.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    {% if TRACK_PIXELMETA and not user.is_staff %}
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{ TRACK_PIXELMETA }}');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id={{ TRACK_PIXELMETA }}&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    {% endif %}
+    
+{% endblock %}
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg-body-secondary" data-bs-theme="{{ DARKMODE }}" 
+hx-boost="true" hx-swap="outerHTML" hx-target="body" hx-indicator="body"
+hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+    {% if TRACK_GOOGLETAG and not user.is_staff %}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ TRACK_GOOGLETAG }}"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    {% endif %}
+
+    {% block header %}{% endblock %}
+
+    {% block body %}{% endblock %}
+
+    {% block footer %}{% endblock %}
+
+    {% block messages %}
+    <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-4" aria-live="polite" aria-atomic="true">
+        {% include 'toast.html' %}
+    </div>
+    {% endblock %}
+
+    {% block style %}{% endblock %}
+    {% block javascript %}{% endblock %}
+
+</body>
+
+</html>
