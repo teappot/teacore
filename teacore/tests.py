@@ -6,10 +6,9 @@ import os
 class MailSendTest(TestCase):
     def setUp(self):
         self.emails = [
-            'walter.riedemann.j@gmail.com',         # No blacklisted
-            'walter.riedemann.j+test@gmail.com',    # Blacklisted by name
-            'walter.riedemann@ejemplo.com',         # Blacklisted by domain
-            'walter.riedemann@conway.cl',           # No blacklisted
+            'username@gmail.com',         # No blacklisted
+            'username+test@gmail.com',    # Blacklisted by name
+            'username@ejemplo.com',         # Blacklisted by domain
         ]
         # Blacklist por dominio y nombre
         MailBlackListRule.objects.create(text='@ejemplo.com', is_enabled=True)
@@ -27,8 +26,7 @@ class MailSendTest(TestCase):
         
         sent = MailSent.objects.all()
         sent_emails = [ms.mail.recipient for ms in sent]
-        self.assertIn('walter.riedemann.j@gmail.com', sent_emails)
-        self.assertIn('walter.riedemann@conway.cl', sent_emails)
-        self.assertNotIn('walter.riedemann.j+test@gmail.com', sent_emails)
-        self.assertNotIn('walter.riedemann@ejemplo.com', sent_emails)
-        self.assertEqual(len(sent_emails), 2)
+        self.assertIn('username@gmail.com', sent_emails)
+        self.assertNotIn('username+test@gmail.com', sent_emails)
+        self.assertNotIn('username@ejemplo.com', sent_emails)
+        self.assertEqual(len(sent_emails), 1)
