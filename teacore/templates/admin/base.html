@@ -190,6 +190,9 @@
                 }
                 if (textarea.classList.contains('inline')) {
                     parent.classList.add('inline');
+                    if (textarea.classList.contains('tall')) {
+                        parent.classList.add('tall');
+                    }
                     addToolbar = false;
                 }
                 parent.append(wrapper);
