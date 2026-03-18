@@ -14,11 +14,12 @@
     <style>
         .ace-container {
             width: 100%;
+            min-width: 320px;
         }
         .ace-toolbar {
             width: 90%;
             max-width: 1366px;
-            padding: 0.75rem 0.25rem;
+            padding: 0.25rem;
             box-sizing: border-box;
             text-align: end;
         }
@@ -46,14 +47,14 @@
             max-width: 1366px;
             min-height: 800px;
         }
-        .ace_editor.half {
+        .half .ace_editor {
             min-height: 400px;
         }
-        .ace_editor.quarter {
+        .quarter .ace_editor {
             max-width: 800px;
             min-height: 10rem;
         }
-        .ace_editor.inline {
+        .inline .ace_editor {
             min-height: 5rem;
             width: 100%;
             max-width: 800px;
@@ -176,13 +177,13 @@
                 wrapper.id = "ace-"+textarea.id
                 
                 if (textarea.classList.contains('half')) {
-                    wrapper.classList.add('half');
+                    parent.classList.add('half');
                 }
                 if (textarea.classList.contains('quarter')) {
-                    wrapper.classList.add('quarter');
+                    parent.classList.add('quarter');
                 }
                 if (textarea.classList.contains('inline')) {
-                    wrapper.classList.add('inline');
+                    parent.classList.add('inline');
                     addToolbar = false;
                 }
                 parent.append(wrapper);
@@ -218,10 +219,10 @@
                 wrapper.id = "ace-"+textarea.id
                 
                 if (textarea.classList.contains('half')) {
-                    wrapper.classList.add('half');
+                    parent.classList.add('half');
                 }
                 if (textarea.classList.contains('quarter')) {
-                    wrapper.classList.add('quarter');
+                    parent.classList.add('quarter');
                 }
                 parent.append(wrapper);
 
