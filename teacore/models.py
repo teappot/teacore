@@ -77,11 +77,10 @@ class ImageHelper:
         if os.path.isfile(os.path.join(settings.MEDIA_ROOT, uuid_filename)):
             os.remove(os.path.join(settings.MEDIA_ROOT, uuid_filename))
 
-        return filename
+        return uuid_filename
 
     @staticmethod
     def mediapath(instance, filename):
-        print("IMAGEPATH", f"{instance.IMAGEPATH}/{filename}")
         return f"{instance.IMAGEPATH}/{filename}"
 
 
