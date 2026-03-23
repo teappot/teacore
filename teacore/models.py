@@ -72,7 +72,7 @@ class ImageHelper:
     @staticmethod
     def rename_to_uuid(instance, filename):
         _, extension = os.path.splitext(instance.image.name)
-        uuid_filename = f"{instance.IMAGEPATH}{str(instance.uuid)}{extension}"
+        uuid_filename = f"{instance.IMAGEPATH}/{str(instance.uuid)}{extension}"
 
         if os.path.isfile(os.path.join(settings.MEDIA_ROOT, uuid_filename)):
             os.remove(os.path.join(settings.MEDIA_ROOT, uuid_filename))
@@ -81,7 +81,7 @@ class ImageHelper:
 
     @staticmethod
     def mediapath(instance, filename):
-        return f"{instance.IMAGEPATH}{filename}"
+        return f"{instance.IMAGEPATH}/{filename}"
 
 
 # Abstracts
