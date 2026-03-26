@@ -11,6 +11,7 @@ register = template.Library()
 @stringfilter
 def markdown(value, request=None):
     context = request.context if hasattr(request, 'context') else {}
+    value = value.replace("\n", "<br/>")
     value = engines['django'].from_string("\n".join([
         "{% load static %}", 
         "{% load i18n %}", 
