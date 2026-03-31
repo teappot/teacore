@@ -120,13 +120,19 @@ hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% block footer %}{% endblock %}
 
     {% block messages %}
-    <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-4" aria-live="polite" aria-atomic="true">
+    <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-4" aria-live="polite" aria-atomic="true" hx-swap-oob="true">
         {% include 'toast.html' %}
     </div>
     {% endblock %}
 
     {% block style %}{% endblock %}
     {% block javascript %}{% endblock %}
+
+    <script>
+        document.body.addEventListener('htmx:responseError', function(evt) {
+            alert("Error: " + evt.detail.xhr.responseText);
+        });
+    </script>
 
 </body>
 
