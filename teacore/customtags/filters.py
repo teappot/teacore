@@ -24,5 +24,5 @@ def plainlist(rows, value: str="__str__"):
 @register.filter
 def replace(value, arg):
     """Usage: {{ text|replace:"old,new" }}"""
-    old, new = arg.split(',')
-    return value.replace(old, new)
+    old, *new = arg.split(',')
+    return value.replace(old, "".join(new))
