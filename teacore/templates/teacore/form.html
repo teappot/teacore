@@ -2,7 +2,7 @@
 
 {% csrf_token %}
 
-<div class="row">
+<div class="d-flex">
 {% for field in form %}
     {% if field.is_hidden %}
         {{ field }}
