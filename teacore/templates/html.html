@@ -134,6 +134,27 @@ hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
         });
     </script>
 
+    <script>
+        htmx.on("htmx:beforeSwap", function () {
+            const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                const instance = bootstrap.Tooltip.getInstance(tooltipTriggerEl);
+                if (instance) instance.dispose();
+            });
+        });
+        htmx.on("htmx:load", function () {
+            const toastElList = document.querySelectorAll('.toast')
+            const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
+            toastList.forEach(toast => toast.show());
+
+            const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl, {
+                    trigger: 'hover'
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
