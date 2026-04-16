@@ -100,13 +100,10 @@ class TeaModelAbstract(models.Model):
         """Soft delete"""
         self.is_deleted = True
         self.save()
-
-    def delete(self, hard=True, *args, **kwargs):
-        if hard:
-            super().delete(*args, **kwargs)
-            return
-        
-        self.trash()
+    def restore(self):
+        """Restore from soft delete"""
+        self.is_deleted = False
+        self.save()
 
     class Meta:
         abstract = True
