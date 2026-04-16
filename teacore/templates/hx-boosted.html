@@ -20,9 +20,11 @@
     {% block footer %}{% endblock %}
 
     {% block messages %}
+    {% if messages %}
     <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-4" aria-live="polite" aria-atomic="true" hx-swap-oob="true">
         {% include 'toast.html' %}
     </div>
+    {% endif %}
     {% endblock %}
 
     {% block style %}{% endblock %}
