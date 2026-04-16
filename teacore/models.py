@@ -99,7 +99,7 @@ class TeaModelAbstract(models.Model):
     def trash(self):
         self.delete(hard=False)
 
-    def delete(self, hard=False, *args, **kwargs):
+    def delete(self, hard=True, *args, **kwargs):
         if hard:
             super().delete(*args, **kwargs)
             return
