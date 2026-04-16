@@ -97,15 +97,17 @@ class TeaModelAbstract(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def trash(self):
-        self.delete(hard=False)
+        """Soft delete"""
+        self.is_enabled = False
+        self.is_deleted = True
+        self.save()
 
     def delete(self, hard=True, *args, **kwargs):
         if hard:
             super().delete(*args, **kwargs)
             return
         
-        self.is_deleted = True
-        self.save()
+        self.trash()
 
     class Meta:
         abstract = True
