@@ -3,7 +3,7 @@
 {% endblock %}
 
 <body class="d-flex flex-column min-vh-100 bg-body-secondary" data-bs-theme="{{ DARKMODE }}" 
-    hx-boost="true" hx-swap="outerHTML" hx-target="body" hx-indicator="body"
+    hx-boost="true" hx-swap="outerHTML" hx-target="main" hx-indicator="main"
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
     {% if TRACK_GOOGLETAG and not user.is_staff %}
@@ -13,11 +13,11 @@
         <!-- End Google Tag Manager (noscript) -->
     {% endif %}
 
-    {% block header %}{% endblock %}
-
-    {% block body %}{% endblock %}
-
-    {% block footer %}{% endblock %}
+    <main>
+        {% block header %}{% endblock %}
+        {% block body %}{% endblock %}
+        {% block footer %}{% endblock %}
+    </main>
 
     {% block messages %}
     <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-4" aria-live="polite" aria-atomic="true" hx-swap-oob="true">
