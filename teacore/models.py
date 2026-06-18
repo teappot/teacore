@@ -15,14 +15,8 @@ from django.http import Http404
 # Base Models
 class Lang(models.Model):
 
-    code = models.CharField(
-        max_length=2, editable=False, unique=True
-    )  # ISO 639 https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes
-    name = models.CharField(
-        max_length=64,
-        editable=False,
-        help_text="Use only endonym (the country name in his own languaje)",
-    )
+    code = models.CharField(max_length=2, editable=False, unique=True)  # ISO 639 https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes
+    name = models.CharField(max_length=64, editable=False, help_text=_("Utiliza el endónimo (el nombre del país en su propio idioma)."))
 
     is_default = models.BooleanField(default=False, editable=False)
     is_enabled = models.BooleanField(default=False)
@@ -66,6 +60,17 @@ class Lang(models.Model):
         verbose_name = "Language"
         verbose_name_plural = "Languages"
 
+class Country(models.Model):
+
+    code = models.CharField(max_length=2, editable=False, unique=True, help_text="Código ISO 3166 A-2")  # ISO 3166 https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
+    name = models.CharField(max_length=96, editable=False, help_text="Nombre del país")
+
+    def __str__(self):
+        return "{} ({})".format(self.code, self.name)
+
+    class Meta:
+        verbose_name = "Country"
+        verbose_name_plural = "Countries"
 
 class ImageHelper:
 
@@ -100,6 +105,7 @@ class TeaModelAbstract(models.Model):
         """Soft delete"""
         self.is_deleted = True
         self.save()
+        
     def restore(self):
         """Restore from soft delete"""
         self.is_deleted = False
