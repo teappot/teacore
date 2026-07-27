@@ -75,6 +75,25 @@ class LangAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
       return False
+
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    model = Country
+    actions = None
+
+    list_display = ["name", "code", "is_default", "is_enabled", ]
+    list_filter = ["is_enabled", ]
+    list_editable = ["is_enabled", ]
+    fields = ["name", "code", "is_enabled", "is_default", ]
+    readonly_fields = ["name", "code", "is_default", ]
+
+    save_on_top = True
+    
+    def has_delete_permission(self, request, obj=None):
+      return False
+
+    def has_add_permission(self, request):
+      return False
     
 @admin.register(Widget)
 class WidgetAdmin(admin.ModelAdmin):

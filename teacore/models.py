@@ -57,20 +57,31 @@ class Lang(models.Model):
         return "{} ({})".format(self.code, self.name)
 
     class Meta:
-        verbose_name = "Language"
-        verbose_name_plural = "Languages"
+        verbose_name = _("Idioma")
+        verbose_name_plural = _("Idiomas")
 
 class Country(models.Model):
 
     code = models.CharField(max_length=2, editable=False, unique=True, help_text="Código ISO 3166 A-2")  # ISO 3166 https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
     name = models.CharField(max_length=96, editable=False, help_text="Nombre del país")
 
+    is_default = models.BooleanField(default=False, editable=False)
+    is_enabled = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+
+        if self.is_default:
+            Country.objects.all().update(is_default=False)
+            self.is_enabled = True
+
+        super().save(*args, **kwargs)
+        
     def __str__(self):
         return "{} ({})".format(self.code, self.name)
 
     class Meta:
-        verbose_name = "Country"
-        verbose_name_plural = "Countries"
+        verbose_name = _("País")
+        verbose_name_plural = _("Países")
 
 class ImageHelper:
 
@@ -105,7 +116,7 @@ class TeaModelAbstract(models.Model):
         """Soft delete"""
         self.is_deleted = True
         self.save()
-        
+
     def restore(self):
         """Restore from soft delete"""
         self.is_deleted = False
