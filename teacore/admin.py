@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
 from django.utils.translation import gettext as _
-from teacore.models import Lang, Mail, MailBlackListRule, MailBlackListed, MailSent, Widget, MediaManager
+from teacore.models import Lang, Mail, MailBlackListRule, Country, MailBlackListed, MailSent, Widget, MediaManager
 from django.conf import settings
 
 from django.urls import path, reverse
