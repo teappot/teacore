@@ -130,6 +130,7 @@ hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <script>
         document.body.addEventListener('htmx:responseError', function(evt) {
             console.error(evt.detail.xhr)
+            document.body.classList.remove("htmx-global-request");
             alert("Error " + evt.detail.xhr.status + ": " + evt.detail.xhr.statusText);
         });
     </script>

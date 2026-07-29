@@ -27,8 +27,8 @@ def create_initial_langs(apps, schema_editor):
 
 def reverse_create_initial_langs(apps, schema_editor):
     # Optional: Logic to reverse the data insertion when un-applying the migration
-    Lang = apps.get_model('teacore', 'Lang')
-    Lang.objects.filter(code__in=['es','en','fr','pt','de','it']).delete()
+    lang = apps.get_model('teacore', 'Lang')
+    lang.objects.filter(code__in=['es','en','fr','pt','de','it']).delete()
 
 class Migration(migrations.Migration):
     initial = True
