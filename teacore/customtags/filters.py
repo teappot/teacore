@@ -26,3 +26,14 @@ def replace(value, arg):
     """Usage: {{ text|replace:"old,new" }}"""
     old, *new = arg.split(',')
     return value.replace(old, "".join(new))
+
+
+@register.filter(name='get')
+def get(dictionary, key):
+    """
+    Returns the value from a dict given a dynamic key.
+    Usage in template: {{ my_dict|get_value:dynamic_key_variable }}
+    """
+    if isinstance(dictionary, dict):
+        return dictionary.get(str(key))
+    return None
